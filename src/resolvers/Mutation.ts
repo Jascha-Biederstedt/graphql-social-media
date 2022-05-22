@@ -14,6 +14,10 @@ interface PostUpdateArgs {
   };
 }
 
+interface PostDeleteArgs {
+  postId: string;
+}
+
 interface PostPayloadType {
   userErrors: {
     message: string;
@@ -99,6 +103,38 @@ export const Mutation = {
         data: {
           ...payloadToUpdate,
         },
+        where: {
+          id: Number(postId),
+        },
+      }),
+    };
+  },
+
+  postDelete: async (
+    parent: any,
+    { postId }: PostDeleteArgs,
+    { prisma }: Context
+  ): Promise<PostPayloadType> => {
+    const existingPost = await prisma.post.findUnique({
+      where: {
+        id: Number(postId),
+      },
+    });
+
+    if (!existingPost) {
+      return {
+        userErrors: [
+          {
+            message: 'Post does not exist.',
+          },
+        ],
+        post: null,
+      };
+    }
+
+    return {
+      userErrors: [],
+      post: await prisma.post.delete({
         where: {
           id: Number(postId),
         },
