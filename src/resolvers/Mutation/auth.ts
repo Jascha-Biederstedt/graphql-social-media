@@ -13,7 +13,7 @@ interface UserPayload {
   userErrors: {
     message: string;
   }[];
-  user: null;
+  token: string | null;
 }
 
 export const authResolvers = {
@@ -31,7 +31,7 @@ export const authResolvers = {
             message: 'Invalid email.',
           },
         ],
-        user: null,
+        token: null,
       };
     }
 
@@ -46,7 +46,7 @@ export const authResolvers = {
             message: 'Password must be at least 5 characters long.',
           },
         ],
-        user: null,
+        token: null,
       };
     }
 
@@ -57,7 +57,7 @@ export const authResolvers = {
             message: 'Missing name or bio.',
           },
         ],
-        user: null,
+        token: null,
       };
     }
 
@@ -73,7 +73,7 @@ export const authResolvers = {
 
     return {
       userErrors: [],
-      user: null,
+      token: null,
     };
   },
 };
