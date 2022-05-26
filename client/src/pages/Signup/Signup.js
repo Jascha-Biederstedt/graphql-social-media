@@ -1,12 +1,12 @@
-import Button from "@restart/ui/esm/Button";
-import React, { useEffect, useState } from "react";
-import { Form } from "react-bootstrap";
+import Button from '@restart/ui/esm/Button';
+import React, { useEffect, useState } from 'react';
+import { Form } from 'react-bootstrap';
 
 export default function Signup() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [bio, setBio] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [name, setName] = useState('');
+  const [bio, setBio] = useState('');
 
   const handleClick = () => {};
 
@@ -21,7 +21,7 @@ export default function Signup() {
             type="text"
             placeholder=""
             value={name}
-            onChange={(e) => setName(e.target.value)}
+            onChange={e => setName(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -30,7 +30,7 @@ export default function Signup() {
             type="text"
             placeholder=""
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -39,7 +39,7 @@ export default function Signup() {
             type="password"
             placeholder=""
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
@@ -48,11 +48,13 @@ export default function Signup() {
             as="textarea"
             rows={3}
             value={bio}
-            onChange={(e) => setBio(e.target.value)}
+            onChange={e => setBio(e.target.value)}
           />
         </Form.Group>
         {error && <p>{error}</p>}
-        <Button onClick={handleClick}>Signup</Button>
+        <Button className="btn btn-primary" onClick={handleClick}>
+          Signup
+        </Button>
       </Form>
     </div>
   );

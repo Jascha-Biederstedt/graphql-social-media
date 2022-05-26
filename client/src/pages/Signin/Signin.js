@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react';
 
-import { Form } from "react-bootstrap";
-import Button from "@restart/ui/esm/Button";
+import { Form } from 'react-bootstrap';
+import Button from '@restart/ui/esm/Button';
 
 export default function Signin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleClick = () => {};
 
@@ -20,7 +20,7 @@ export default function Signin() {
             type="text"
             placeholder=""
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
           />
         </Form.Group>
         <Form.Group className="mb-3">
@@ -29,12 +29,14 @@ export default function Signin() {
             type="password"
             placeholder=""
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={e => setPassword(e.target.value)}
           />
         </Form.Group>
 
         {error && <p>{error}</p>}
-        <Button onClick={handleClick}>Signin</Button>
+        <Button className="btn btn-primary" onClick={handleClick}>
+          Signin
+        </Button>
       </Form>
     </div>
   );
