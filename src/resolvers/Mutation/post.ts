@@ -1,6 +1,7 @@
 import { Post, Prisma } from '@prisma/client';
 
 import { Context } from '../../index';
+import { canUserMutatePost } from '../../utils/canUserMutatePost';
 
 interface PostCreateArgs {
   post: { title: string; content: string };
@@ -70,8 +71,27 @@ export const postResolvers = {
   postUpdate: async (
     parent: any,
     { postId, post: { title, content } }: PostUpdateArgs,
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: 'Forbidden access (unauthorized).',
+          },
+        ],
+        post: null,
+      };
+    }
+
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+
+    if (error) return error;
+
     if (!title && !content) {
       return {
         userErrors: [
@@ -124,8 +144,27 @@ export const postResolvers = {
   postDelete: async (
     parent: any,
     { postId }: PostDeleteArgs,
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: 'Forbidden access (unauthorized).',
+          },
+        ],
+        post: null,
+      };
+    }
+
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+
+    if (error) return error;
+
     const existingPost = await prisma.post.findUnique({
       where: {
         id: Number(postId),
