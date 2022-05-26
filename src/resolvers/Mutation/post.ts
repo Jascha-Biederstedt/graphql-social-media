@@ -29,8 +29,19 @@ export const postResolvers = {
   postCreate: async (
     parent: any,
     { post: { title, content } }: PostCreateArgs,
-    { prisma }: Context
+    { prisma, userInfo }: Context
   ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: 'Forbidden access (unauthorized).',
+          },
+        ],
+        post: null,
+      };
+    }
+
     if (!title || !content) {
       return {
         userErrors: [
@@ -46,7 +57,7 @@ export const postResolvers = {
       data: {
         title,
         content,
-        authorId: 1,
+        authorId: userInfo.userId,
       },
     });
 
