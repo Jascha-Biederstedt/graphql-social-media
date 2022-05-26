@@ -19,6 +19,10 @@ interface PostDeleteArgs {
   postId: string;
 }
 
+interface PostPublishArgs {
+  postId: string;
+}
+
 interface PostPayloadType {
   userErrors: {
     message: string;
@@ -187,6 +191,80 @@ export const postResolvers = {
       post: await prisma.post.delete({
         where: {
           id: Number(postId),
+        },
+      }),
+    };
+  },
+
+  postPublish: async (
+    parent: any,
+    { postId }: PostPublishArgs,
+    { prisma, userInfo }: Context
+  ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: 'Forbidden access (unauthorized).',
+          },
+        ],
+        post: null,
+      };
+    }
+
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+
+    if (error) return error;
+
+    return {
+      userErrors: [],
+      post: await prisma.post.update({
+        where: {
+          id: Number(postId),
+        },
+        data: {
+          published: true,
+        },
+      }),
+    };
+  },
+
+  postUnpublish: async (
+    parent: any,
+    { postId }: PostPublishArgs,
+    { prisma, userInfo }: Context
+  ): Promise<PostPayloadType> => {
+    if (!userInfo) {
+      return {
+        userErrors: [
+          {
+            message: 'Forbidden access (unauthorized).',
+          },
+        ],
+        post: null,
+      };
+    }
+
+    const error = await canUserMutatePost({
+      userId: userInfo.userId,
+      postId: Number(postId),
+      prisma,
+    });
+
+    if (error) return error;
+
+    return {
+      userErrors: [],
+      post: await prisma.post.update({
+        where: {
+          id: Number(postId),
+        },
+        data: {
+          published: false,
         },
       }),
     };
