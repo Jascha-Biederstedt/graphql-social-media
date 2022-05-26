@@ -1,10 +1,10 @@
 import { Context } from '../index';
 
 export const Query = {
-  me: async (parent: any, args: any, { prisma, userInfo }: Context) => {
+  me: (parent: any, args: any, { prisma, userInfo }: Context) => {
     if (!userInfo) return null;
 
-    return await prisma.user.findUnique({
+    return prisma.user.findUnique({
       where: {
         id: userInfo.userId,
       },
@@ -18,6 +18,18 @@ export const Query = {
           createdAt: 'desc',
         },
       ],
+    });
+  },
+
+  profile: (
+    parent: any,
+    { userId }: { userId: string },
+    { prisma }: Context
+  ) => {
+    return prisma.profile.findMany({
+      where: {
+        userId: Number(userId),
+      },
     });
   },
 };
