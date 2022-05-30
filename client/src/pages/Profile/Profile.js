@@ -18,6 +18,7 @@ const GET_PROFILE = gql`
           title
           content
           createdAt
+          published
         }
       }
     }
@@ -62,6 +63,8 @@ export default function Profile() {
               content={post.content}
               date={post.createdAt}
               user={profile.user.name}
+              published={post.published}
+              isMyProfile={profile.isMyProfile}
             />
           );
         })}
