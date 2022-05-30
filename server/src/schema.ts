@@ -41,6 +41,7 @@ export const typeDefs = gql`
     id: ID!
     bio: String!
     user: User!
+    isMyProfile: Boolean!
   }
 
   type UserError {
