@@ -28,14 +28,16 @@ export default function Posts() {
   return (
     <div>
       {posts.map(post => {
-        return;
-        <Post
-          id={post.id}
-          title={post.title}
-          content={post.content}
-          date={post.createdAt}
-          user={post.user.name}
-        />;
+        return (
+          <Post
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            content={post.content}
+            date={post.createdAt}
+            user={post.user.name}
+          />
+        );
       })}
     </div>
   );
