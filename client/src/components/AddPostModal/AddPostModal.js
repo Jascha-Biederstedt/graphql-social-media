@@ -1,16 +1,44 @@
-import React, { useState } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import React, { useState } from 'react';
+import { Modal, Button, Form } from 'react-bootstrap';
+import { useMutation, gql } from '@apollo/client';
+
+const CREATE_POST = gql`
+  mutation CreatePost($title: String!, $content: String!) {
+    postCreate(post: { title: $title, content: $content }) {
+      userErrors {
+        message
+      }
+      post {
+        title
+        createdAt
+        content
+        user {
+          name
+        }
+      }
+    }
+  }
+`;
 
 export default function AddPostModal() {
+  const [addPost, { data, loading }] = useMutation(CREATE_POST);
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [content, setContent] = useState("");
-  const [title, setTitle] = useState("");
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    addPost({
+      variables: {
+        title,
+        content,
+      },
+    });
+  };
 
   return (
     <>
@@ -35,7 +63,7 @@ export default function AddPostModal() {
                 type="text"
                 placeholder=""
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={e => setTitle(e.target.value)}
               />
             </Form.Group>
 
@@ -48,7 +76,7 @@ export default function AddPostModal() {
                 as="textarea"
                 rows={3}
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={e => setContent(e.target.value)}
               />
             </Form.Group>
           </Form>

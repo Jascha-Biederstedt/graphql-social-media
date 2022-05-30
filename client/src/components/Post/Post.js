@@ -4,7 +4,7 @@ import { gql, useMutation } from '@apollo/client';
 import './Post.css';
 
 const PUBLISH_POST = gql`
-  mutation PublishPost($postId: ID!) {
+  mutation publishPost($postId: ID!) {
     postPublish(postId: $postId) {
       post {
         title
